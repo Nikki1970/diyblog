@@ -9,7 +9,7 @@ class BlogAuthor(models.Model):
     about_the_author = models.TextField(max_length=400, help_text="Enter your details.")
 
     def __str__(self):
-        return self.user.username
+        return self.about_the_author
 
 class Blog(models.Model):
     title = models.CharField(max_length = 100,help_text="Enter the blog title")
@@ -19,6 +19,7 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
     def get_absolute_url(self):
         return reverse('blog-detail',args=[str(self.id)])
 
