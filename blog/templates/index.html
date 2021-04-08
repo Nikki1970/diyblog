@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Blog Home</h1>
+  <p>Welcome to Blog Times, a website developed by <em>Nikhilesh SV</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The library has the following record counts:</p>
+  <ul>
+    <li><strong>Blogs:</strong> {{ num_blogs }}</li>
+    <li><strong>All authors:</strong> {{ num_authors }}</li>
+    <li><strong>Comments:</strong> {{ num_comments }}</li>
+  </ul>
+{% endblock %}
