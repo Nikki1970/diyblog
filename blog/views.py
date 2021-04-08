@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from blog.models import Blog, BlogAuthor, BlogComment
+from django.views import generic
 
 def index(request):
     """View function for home page of site."""
@@ -19,3 +20,6 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+class BlogListView(generic.ListView):
+    model = Blog
