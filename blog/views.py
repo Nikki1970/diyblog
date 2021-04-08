@@ -23,9 +23,13 @@ def index(request):
 
 class BlogListView(generic.ListView):
     model = Blog
+    paginate_by=1
 
 class BlogDetailView(generic.DetailView):
     model = Blog
 
 class AuthorListView(generic.ListView):
+    model = BlogAuthor
+
+class AuthorDetailView(generic.DetailView):
     model = BlogAuthor

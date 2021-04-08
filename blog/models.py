@@ -10,6 +10,9 @@ class BlogAuthor(models.Model):
 
     def __str__(self):
         return self.about_the_author
+    
+    def get_absolute_url(self):
+        return reverse('author-detail',args=[str(self.id)])
 
 class Blog(models.Model):
     title = models.CharField(max_length = 100,help_text="Enter the blog title")
