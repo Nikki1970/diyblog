@@ -1,15 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from blog.models import Blog, BlogAuthor, BlogComment
 from django.views import generic
+from .forms import BlogCommentForm
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     """View function for home page of site."""
 
     # Generate counts of some of the main objects
     num_blogs = Blog.objects.all().count()
-    num_authors = BlogAuthor.objects.all().count()
+    num_authors = BlogAuthor.objects.count()
     num_comments = BlogComment.objects.count()
 
     context = {
@@ -33,3 +37,17 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = BlogAuthor
+
+@login_required
+def blogcomment_new(request, pk):
+    if request.method == "POST":
+        form = BlogCommentForm(request.POST)
+        if form.is_valid():
+            x = form.save(commit=False)
+            x.user = request.user
+            x.blog = get_object_or_404(Blog, pk=pk)
+            x.save()
+            return redirect('blog-detail', pk=pk)
+    else:
+        form = BlogCommentForm()
+    return render(request, 'blog/blog_comment.html', {'form': form})
