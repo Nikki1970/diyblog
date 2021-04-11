@@ -3,7 +3,15 @@
 {% block content %}
   <h1>Title: {{ blog.title }}</h1>
 
-  <p><strong>Author:</strong> {{ blog.author.user }}</p> <!-- author detail link not yet defined -->
+  <p><strong>Author:</strong> <a href = "{% url 'author-detail' blog.author.pk %}">{{ blog.author.user }}</a></p>
   <p><strong>Published date:</strong> {{ blog.pub_date }}</p>
   <p><strong>Description:</strong> {{ blog.detail }}</p>
+  <p></p>
+  <ul>{% for comment in blog.blogcomment_set.all %}
+  <li>
+    {{comment}}
+  </li>
+  {% endfor %}
+  </ul>
+  <a href="{% url 'blogcomment_new' pk=blog.pk %}">Add comment</a>
 {% endblock %}

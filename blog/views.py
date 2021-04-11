@@ -3,9 +3,10 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from blog.models import Blog, BlogAuthor, BlogComment
 from django.views import generic
-from .forms import BlogCommentForm
+from .forms import BlogCommentForm, BlogForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+import datetime
 
 
 def index(request):
@@ -27,7 +28,6 @@ def index(request):
 
 class BlogListView(generic.ListView):
     model = Blog
-    paginate_by=1
 
 class BlogDetailView(generic.DetailView):
     model = Blog
@@ -51,3 +51,17 @@ def blogcomment_new(request, pk):
     else:
         form = BlogCommentForm()
     return render(request, 'blog/blog_comment.html', {'form': form})
+
+@login_required
+def blog_post(request):
+    if request.method == "POST":
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            x = form.save(commit=False)
+            x.pub_date = datetime.date.today()
+            x.author = BlogAuthor.objects.get(user=request.user)
+            x.save()
+            return redirect('allblogs')
+    else:
+        form = BlogForm()
+        return render(request, 'blog/blog_post.html', {'form': form})

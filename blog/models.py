@@ -9,15 +9,15 @@ class BlogAuthor(models.Model):
     about_the_author = models.TextField(max_length=400, help_text="Enter your details.")
 
     def __str__(self):
-        return self.about_the_author
+        return str(self.user)
     
     def get_absolute_url(self):
         return reverse('author-detail',args=[str(self.id)])
 
 class Blog(models.Model):
     title = models.CharField(max_length = 100,help_text="Enter the blog title")
-    author = models.ForeignKey(BlogAuthor,on_delete=models.SET_NULL,null=True)
-    pub_date = models.DateField(default=date.today)
+    author = models.ForeignKey('BlogAuthor', on_delete=models.SET_NULL,null=True)
+    pub_date = models.DateField(default=date.today())
     detail = models.TextField(max_length = 500,help_text="Describe about the blog")
 
     def __str__(self):
@@ -27,11 +27,9 @@ class Blog(models.Model):
         return reverse('blog-detail',args=[str(self.id)])
 
 class BlogComment(models.Model):
-    description = models.TextField(max_length=100,help_text="Comment on it")
-    blog = models.ForeignKey(Blog,on_delete=models.CASCADE)
-    user = models.OneToOneField(User,on_delete=models.SET_NULL,null=True)
+    description = models.TextField(max_length=100, help_text="Comment on it")
+    blog = models.ForeignKey('Blog', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.description
-
-
